@@ -9,6 +9,30 @@ class PostQuerySet(models.QuerySet):
         return self.filter(
             published_at__year=year
         ).order_by('published_at')
+    
+    def popular(self):
+        return self.annotate(
+            likes_count=models.Count('likes', distinct=True)
+        ).order_by('-likes_count')
+    
+    def fetch_with_comments_count(self):
+        """Добавляет объектам posts атрибут comments_count средствами
+        Python. Используется в качестве замены метода annotate(), чтобы
+        снизить нагрузку на базу данных в случае необходимости
+        последовательного вызова двух методов annotate().
+        """
+        posts = self.all()
+        posts_with_comments = Post.objects.filter(id__in=posts).annotate(
+            comments_count=models.Count('comments')
+        )
+        ids_and_comments = posts_with_comments.values_list(
+            'id',
+            'comments_count'
+        )
+        count_for_id = dict(ids_and_comments)
+        for post in posts:
+            post.comments_count = count_for_id[post.id]
+        return posts
 
 
 class TagQuerySet(models.QuerySet):
