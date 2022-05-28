@@ -9,12 +9,12 @@ class PostQuerySet(models.QuerySet):
         return self.filter(
             published_at__year=year
         ).order_by('published_at')
-    
+
     def popular(self):
         return self.annotate(
             likes_count=models.Count('likes', distinct=True)
         ).order_by('-likes_count')
-    
+
     def fetch_with_comments_count(self):
         """Добавляет объектам posts атрибут comments_count средствами
         Python. Используется в качестве замены метода annotate(), чтобы

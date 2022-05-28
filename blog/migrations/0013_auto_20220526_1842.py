@@ -14,6 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='comment',
             name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='blog.post', verbose_name='Пост, к которому написан'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='comments',
+                to='blog.post',
+                verbose_name='Пост, к которому написан'
+            ),
         ),
     ]

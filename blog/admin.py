@@ -19,6 +19,7 @@ class CommentAdminModel(admin.ModelAdmin):
             'post'
         )
 
+
 admin.site.register(Post, PostAdminModel)
 admin.site.register(Tag, TagAdminModel)
 admin.site.register(Comment, CommentAdminModel)
