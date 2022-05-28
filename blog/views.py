@@ -41,9 +41,7 @@ def index(request):
     ).prefetch_related('author').prefetch_related('tags')
     most_fresh_posts = list(fresh_posts)[-5:]
 
-    most_popular_tags = Tag.objects.popular().annotate(
-        posts_count=Count('posts')
-    )[:5]
+    most_popular_tags = Tag.objects.popular()[:5]
 
     context = {
         'most_popular_posts': [
